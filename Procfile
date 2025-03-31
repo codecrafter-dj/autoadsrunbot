@@ -1,1 +1,1 @@
-web: python AUTOAD.PY
+worker: python AUTOAD.PY
