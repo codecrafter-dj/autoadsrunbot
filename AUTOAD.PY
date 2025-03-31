@@ -18,7 +18,7 @@ load_dotenv()
 # Configuration
 API_ID = int(os.getenv('API_ID'))
 API_HASH = os.getenv('API_HASH')
-PHONE = os.getenv('PHONE_NUMBER')
+PHONE = os.getenv('PHONE_NUMBER')  # The phone number should be directly in your .env file
 MESSAGE = os.getenv('MESSAGE')
 SESSION_FILE = 'session.session'
 
@@ -78,12 +78,20 @@ class GroupSender:
     async def main(self):
         try:
             await self.client.connect()
+
+            debug_print(f"Phone number from env: {PHONE}")  # Debug line to ensure PHONE is read correctly
             
             if not await self.client.is_user_authorized():
-                await self.client.send_code_request(PHONE)
-                code = input('Enter the code you received: ')
-                await self.client.sign_in(PHONE, code)
-                debug_print("Successfully logged in")
+                # Skip the phone number prompt and directly use the phone from the .env file
+                if PHONE:
+                    await self.client.send_code_request(PHONE)
+                    code = os.getenv('AUTH_CODE')  # Ensure you set AUTH_CODE in your environment
+                    if not code:
+                        raise Exception("AUTH_CODE environment variable is missing.")
+                    await self.client.sign_in(PHONE, code)
+                    debug_print("Successfully logged in")
+                else:
+                    raise Exception("PHONE_NUMBER is not set in the .env file.")
             
             debug_print("Bot started successfully")
             group_timers = {}
