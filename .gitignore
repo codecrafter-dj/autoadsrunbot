@@ -1,0 +1,22 @@
+# Ignore Python bytecode files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore session files (telethon session files)
+*.session
+
+# Ignore environment configuration files
+.env
+
+# Ignore IDE/Editor configuration files
+.vscode/
+.idea/
+
+# Ignore operating system specific files
+.DS_Store
+Thumbs.db
+
+# Ignore other unnecessary files
+*.log
